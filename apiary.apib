@@ -1,0 +1,366 @@
+FORMAT: 1A
+HOST: http://polls.apiblueprint.org/
+
+# TrelloLike
+
+Polls is a simple API allowing consumers to view polls and vote in them.
+
+## Boards Collection [/boards]
+
+### List All Boards [GET]
++ Request
+    + Headers
+
+            Authorization: JWT_TOKEN: 1324
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 0,
+                "name": "Trello like app development",
+            },
+            {
+                "id": 1,
+                "name": "Marketing",
+            }
+        ]
+
+### Create a New Board [POST]
+
++ Request (application/json)
+
+        {
+            "name": "New project idea",
+        }
+    + Headers
+
+            Authorization: JWT_TOKEN: 1324
+            
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /boards/2
+
+    + Body
+
+            {
+                "id": 2,
+                "name": "New project idea",
+                "ownerID": 0
+                "lists": []
+            }
+
+### Add team memeber [POST /board/{board_id}/team/{user_id}]
++ Request
+    + Headers
+
+            Authorization: JWT_TOKEN: 1324
+            
++ Response 200 (application/json)
+
+
+
+## Lists Collection [/boards/{board_id}/lists]
+
++ Parameters
+    + board_id (number) - ID of the Board in the form of an integer
+    
+### List All lists for board [GET]
++ Request
+    + Headers
+
+            Authorization: JWT_TOKEN: 1324
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 0,
+                "name": "TODO",
+                "tasks": [
+                     {
+                        "id": 0,
+                        "name": "Landingpage design",
+                        "description": "",
+                        "priority": 3,
+                        "deadline": "2017-11-11T08:40:51.620Z",
+                        "finished": false
+                    },
+                
+                ]
+            },
+            {
+                "id": 1,
+                "name": "DOING",
+                 "tasks": [
+                     {
+                        "id": 1,
+                        "name": "Landingpage design",
+                        "description": "",
+                        "priority": 3,
+                        "deadline": "2017-11-11T08:40:51.620Z",
+                        "finished": false
+                    },
+                
+                ]
+            },
+            {
+                "id": 2,
+                "name": "DONE",
+                "tasks": [
+                     {
+                        "id": 3,
+                        "name": "API design",
+                        "description": "",
+                        "priority": 3,
+                        "deadline": "2017-11-11T08:40:51.620Z",
+                        "finished": false
+                    },
+                
+                ]
+            }
+        ]
+        
+### Create New list [POST]
+
++ Request (application/json)
+
+        {
+            "name": "Backlog",
+        }
+    + Headers
+
+            Authorization: JWT_TOKEN: 1324        
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /boards/2/lists/3
+
+    + Body
+
+            {
+                "id": 3,
+                "name": "Backlog"
+            }
+            
+            
+## List [/boards/{board_id}/lists/{list_id}]
+
++ Parameters
+    + board_id (number) - ID of the Board in the form of an integer
+    + list_id (number) - ID of the List in the form of an integer
+    
+### View List Details [GET]
++ Request
+    + Headers
+
+            Authorization: JWT_TOKEN: 1324
+            
++ Response 200 (application/json)
+
+        {
+            "id": 3,
+            "name": "Backlog"
+        }
+
+    
+### Delete List [DELETE]
++ Request
+    + Headers
+
+            Authorization: JWT_TOKEN: 1324
+            
++ Response 204 (application/json)
+
+
+
+
+## Tasks Collection [/boards/{board_id}/lists/{list_id}/tasks]
+
++ Parameters
+    + board_id (number) - ID of the Board in the form of an integer
+    + list_id (number) - ID of the List in the form of an integer
+
+### List All Tasks [GET]
+List of all tasks for given list
+
++ Request
+    + Headers
+
+            Authorization: JWT_TOKEN: 1324
+            
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 0,
+                "name": "Landingpage design",
+                "description": "",
+                "priority": 3,
+                "deadline": "2017-11-11T08:40:51.620Z",
+                "finished": false
+            },
+            {
+                "id": 1,
+                "name": "Api documentation",
+                "description": "",
+                "priority": 3,
+                "deadline": "2017-11-11T08:40:51.620Z",
+                "finished": false
+            },
+        ]
+
+### Create New Task [POST]
++ Request (application/json)
+
+        {
+            "name": "New idea",
+            "description": "Do shtm",
+            "priority": 3,
+            "deadline": "2017-11-11T08:40:51.620Z",
+        }
+    + Headers
+
+            Authorization: JWT_TOKEN: 1324        
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /boards/2/lists/3/tasks/2
+
+    + Body
+
+            {
+                "id": 2
+                "name": "New idea",
+                "description": "Do shtm",
+                "priority": 3,
+                "deadline": "2017-11-11T08:40:51.620Z",
+                "finished": false
+            }
+
+
+## Task [/boards/{board_id}/lists/{list_id}/tasks/{task_id}]
+
++ Parameters
+    + board_id (number) - ID of the Board in the form of an integer
+    + list_id (number) - ID of the List in the form of an integer
+    + task_id (number) - ID of the List in the form of an integer
+
+### Get Task [GET]
++ Request
+    + Headers
+
+            Authorization: JWT_TOKEN: 1324
+            
++ Response 200 (application/json)
+
+        {
+            "id": 2
+            "name": "New idea",
+            "description": "Do shtm",
+            "priority": 3,
+            "deadline": "2017-11-11T08:40:51.620Z",
+            "finished": false
+        }
+    
+### Edit task [PATCH]
+
++ Request (application/json)
+
+        {
+            "name": "New Name",
+            "description": "Do shtm",
+            "priority": 3,
+            "deadline": "2017-11-11T08:40:51.620Z",
+        }
+    + Headers
+
+            Authorization: JWT_TOKEN: 1324
+
++ Response 200 (application/json)
+
+        {
+            "id": 2
+            "name": "New Name",
+            "description": "Do shtm",
+            "priority": 3,
+            "deadline": "2017-11-11T08:40:51.620Z",
+            "finished": false
+        }
+
+### Delete Task [DELETE]
++ Request
+    + Headers
+
+            Authorization: JWT_TOKEN: 1324
+            
++ Response 204 (application/json)
+
+
+### Mark as completed [GET /boards/{board_id}/lists/{list_id}/tasks/{task_id}/completed]
+Marks task as completed or uncompleted.
++ Request
+    + Headers 
+    
+            Authorization: JWT_TOKEN: 1324
+
++ Response 200 (application/json)
+
+        {
+            "id": 2
+            "finished": True
+        }
+
+## User's Account's [/accounts/register]
+
+### Register  [POST]
+
++ Request (application/json)
+
+        {
+            "username": "Michal",
+            "email": "michal@gmail.com",
+            "password": "MyPassword123"
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /boards/2
+
+    + Body
+
+            {
+                "username": "Michal",
+                "jwt_token": "sdsa231243ffddfd"
+            }
+
+
+
+### Login  [POST /accounts/login]
+
++ Request (application/json)
+
+        {
+            "username": "Michal",
+            "password": "MyPassword123"
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /boards/2
+
+    + Body
+
+            {
+                "jwt_token": "sdsa231243ffddfd"
+            }
