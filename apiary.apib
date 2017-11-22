@@ -3,7 +3,7 @@ HOST: http://polls.apiblueprint.org/
 
 # TrelloLike
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+TrelloLike API for mobile project management application.
 
 ## Boards Collection [/boards]
 
@@ -25,6 +25,13 @@ Polls is a simple API allowing consumers to view polls and vote in them.
                 "name": "Marketing",
             }
         ]
+        
++ Response 401 (application/json)
+
+        {
+            "detail": "Authentication credentials were not provided."
+        }
+
 
 ### Create a New Board [POST]
 
@@ -52,14 +59,32 @@ Polls is a simple API allowing consumers to view polls and vote in them.
                 "lists": []
             }
 
-### Add team memeber [POST /board/{board_id}/team/{user_id}]
++ Response 401 (application/json)
+
+        {
+            "detail": "Authentication credentials were not provided."
+        }
+
+
+### Add / Remove team memeber [POST /board/{board_id}/team/{user_id}]
 + Request
     + Headers
 
             Authorization: JWT_TOKEN: 1324
             
 + Response 200 (application/json)
+ 
++ Response 401 (application/json)
 
+        {
+            "detail": "Authentication credentials were not provided."
+        }
+
++ Response 404 (application/json)
+
+        {
+            "detail": "Not found."
+        }
 
 
 ## Lists Collection [/boards/{board_id}/lists]
@@ -123,6 +148,18 @@ Polls is a simple API allowing consumers to view polls and vote in them.
             }
         ]
         
++ Response 401 (application/json)
+
+        {
+            "detail": "Authentication credentials were not provided."
+        }
+
++ Response 404 (application/json)
+
+        {
+            "detail": "Not found."
+        }
+        
 ### Create New list [POST]
 
 + Request (application/json)
@@ -167,7 +204,18 @@ Polls is a simple API allowing consumers to view polls and vote in them.
             "name": "Backlog"
         }
 
-    
++ Response 401 (application/json)
+
+        {
+            "detail": "Authentication credentials were not provided."
+        }
+
++ Response 404 (application/json)
+
+        {
+            "detail": "Not found."
+        }
+        
 ### Delete List [DELETE]
 + Request
     + Headers
@@ -176,7 +224,17 @@ Polls is a simple API allowing consumers to view polls and vote in them.
             
 + Response 204 (application/json)
 
++ Response 401 (application/json)
 
+        {
+            "detail": "Authentication credentials were not provided."
+        }
+
++ Response 404 (application/json)
+
+        {
+            "detail": "Not found."
+        }
 
 
 ## Tasks Collection [/boards/{board_id}/lists/{list_id}/tasks]
@@ -214,6 +272,18 @@ List of all tasks for given list
             },
         ]
 
++ Response 401 (application/json)
+
+        {
+            "detail": "Authentication credentials were not provided."
+        }
+
++ Response 404 (application/json)
+
+        {
+            "detail": "Not found."
+        }
+
 ### Create New Task [POST]
 + Request (application/json)
 
@@ -243,7 +313,13 @@ List of all tasks for given list
                 "deadline": "2017-11-11T08:40:51.620Z",
                 "finished": false
             }
+            
++ Response 401 (application/json)
 
+        {
+            "detail": "Authentication credentials were not provided."
+        }
+        
 
 ## Task [/boards/{board_id}/lists/{list_id}/tasks/{task_id}]
 
@@ -268,7 +344,19 @@ List of all tasks for given list
             "deadline": "2017-11-11T08:40:51.620Z",
             "finished": false
         }
-    
+        
++ Response 401 (application/json)
+
+        {
+            "detail": "Authentication credentials were not provided."
+        }
+
++ Response 404 (application/json)
+
+        {
+            "detail": "Not found."
+        } 
+        
 ### Edit task [PATCH]
 
 + Request (application/json)
@@ -293,6 +381,18 @@ List of all tasks for given list
             "deadline": "2017-11-11T08:40:51.620Z",
             "finished": false
         }
+        
++ Response 401 (application/json)
+
+        {
+            "detail": "Authentication credentials were not provided."
+        }
+
++ Response 404 (application/json)
+
+        {
+            "detail": "Not found."
+        }        
 
 ### Delete Task [DELETE]
 + Request
@@ -302,6 +402,17 @@ List of all tasks for given list
             
 + Response 204 (application/json)
 
++ Response 401 (application/json)
+
+        {
+            "detail": "Authentication credentials were not provided."
+        }
+
++ Response 404 (application/json)
+
+        {
+            "detail": "Not found."
+        }
 
 ### Mark as completed [GET /boards/{board_id}/lists/{list_id}/tasks/{task_id}/completed]
 Marks task as completed or uncompleted.
@@ -315,6 +426,39 @@ Marks task as completed or uncompleted.
         {
             "id": 2
             "finished": True
+        }
+        
++ Response 401 (application/json)
+
+        {
+            "detail": "Authentication credentials were not provided."
+        }
+
++ Response 404 (application/json)
+
+        {
+            "detail": "Not found."
+        }       
+
+### Change list [GET /boards/{board_id}/lists/{list_id}/tasks/{task_id}/move/{new_list_id}]
+Move task to another list
++ Request
+    + Headers 
+    
+            Authorization: JWT_TOKEN: 1324
+
++ Response 200 (application/json)
+
++ Response 401 (application/json)
+
+        {
+            "detail": "Authentication credentials were not provided."
+        }
+
++ Response 404 (application/json)
+
+        {
+            "detail": "Not found."
         }
 
 ## User's Account's [/accounts/register]
