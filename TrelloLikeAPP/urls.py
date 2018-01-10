@@ -21,6 +21,5 @@ urlpatterns = [
     path('boards/', include('boards.urls')),
     path('api-auth', include('rest_framework.urls')),
     path('users/', include('users.urls')),
-    #TODO
-    # path('comments/', include('comments.urls'))
+    path('comments/', include('comments.urls'))
 ]
