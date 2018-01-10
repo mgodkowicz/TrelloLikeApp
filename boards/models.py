@@ -12,10 +12,16 @@ class Board(models.Model):
     owner_id = models.ForeignKey(UserProjectOwners, on_delete=models.CASCADE, related_name='Owner')
     contributors = models.ForeignKey(UserProjectTeam, null=True, blank=True, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.name
+
 
 class List(models.Model):
     name = models.TextField()
     board_id = models.ForeignKey(Board, on_delete=models.CASCADE, related_name='Project')
+
+    def __str__(self):
+        return self.name
 
 
 class Task(models.Model):
@@ -26,3 +32,6 @@ class Task(models.Model):
     finished = models.BooleanField(default=False)
     performer_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Task')
     list_id = models.ForeignKey(List, on_delete=models.CASCADE, related_name='List')
+
+    def __str__(self):
+        return self.name

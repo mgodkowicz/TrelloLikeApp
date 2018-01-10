@@ -7,6 +7,9 @@ User = settings.AUTH_USER_MODEL
 class UserProjectOwners(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.user.username
+
 
 class UserProjectTeam(models.Model):
     user = models.ManyToManyField(User)

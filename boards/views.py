@@ -69,5 +69,20 @@ class TaskCompletionView(APIView):
         task = get_object_or_404(Task, id=kwargs['task_id'])
         task.finished = not task.finished
         task.save()
-        return Response({'id': task.id,
-                         'finished': task.finished})
+        return Response({
+            'task_id': task.id,
+            'finished': task.finished
+        })
+
+
+class TaskMoveView(APIView):
+
+    def get(self, request, **kwargs):
+        task = get_object_or_404(Task, id=kwargs['task_id'])
+        task.list_id = get_object_or_404(List, id=kwargs['new_list_id'])
+        task.save()
+        return Response(
+            {
+                'task_id': task.id,
+                'new_list_id': task.list_id.id
+            })
