@@ -7,13 +7,14 @@ from rest_framework.test import APITestCase, APIClient
 
 from boards.models import Board, List, Task
 from boards.serializers import BoardsGetListSerializer, ListsListSerializer, TasksListSerializer
-from users.models import UserProjectOwners
+from users.models import UserProjectOwners, UserProjectTeam
 
 
 class SetUp(APITestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = User.objects.create(username='TestUser')
+        self.user2 = User.objects.create(username='TestUser2')
         self.owner = UserProjectOwners.objects.create(
             user=self.user
         )
@@ -477,3 +478,41 @@ class TaskManagementTest(SetUp):
                     )
         )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_should_add_user_to_task(self):
+        old_performer = self.task_obj.performer_id
+        response = self.client.get(
+            reverse('boards:task-add-user',
+                    kwargs={
+                        'board_id': self.board.id,
+                        'list_id': self.list_obj.id,
+                        'task_id': self.task_obj.id,
+                        'user_id': self.user2.id
+                        }
+                    )
+        )
+        self.task_obj.refresh_from_db()
+        self.assertEqual(self.task_obj.performer_id.id, self.user2.id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertNotEqual(old_performer, self.task_obj.performer_id)
+
+
+class BoardAddUserTest(SetUp):
+    def setUp(self):
+        super(BoardAddUserTest, self).setUp()
+
+    def test_add_user(self):
+        response = self.client.get(
+            reverse('boards:add-user',
+                    kwargs={
+                        'board_id': self.board.id,
+                        'user_id': self.user2.id
+                    })
+        )
+        board = Board.objects.get(id=self.board.id)
+        team = UserProjectTeam.objects.filter(
+            id=board.contributors.id
+        ).first()
+
+        self.assertEqual(board.contributors, team)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)

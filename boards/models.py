@@ -10,7 +10,9 @@ User = settings.AUTH_USER_MODEL
 class Board(models.Model):
     name = models.CharField(max_length=32)
     owner_id = models.ForeignKey(UserProjectOwners, on_delete=models.CASCADE, related_name='Owner')
-    contributors = models.ForeignKey(UserProjectTeam, null=True, blank=True, on_delete=models.CASCADE)
+    contributors = models.ForeignKey(
+        UserProjectTeam, null=True, blank=True,
+        on_delete=models.CASCADE, related_name="board")
 
     def __str__(self):
         return self.name
