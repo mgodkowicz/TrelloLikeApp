@@ -3,10 +3,16 @@ from rest_framework.serializers import ModelSerializer
 from boards.models import Board, List, Task
 
 
-class BoardsListSerializer(ModelSerializer):
+class BoardsGetListSerializer(ModelSerializer):
     class Meta:
         model = Board
         fields = '__all__'
+
+
+class BoardsPostListSerializer(ModelSerializer):
+    class Meta:
+        model = Board
+        fields = ['name']
 
 
 class ListsListSerializer(ModelSerializer):

@@ -7,14 +7,21 @@ from django.shortcuts import get_object_or_404
 
 from boards.models import Board, List, Task
 from users.models import UserProjectOwners
-from boards.serializers import BoardsListSerializer, ListsListSerializer, TasksListSerializer
+from boards.serializers import BoardsGetListSerializer, ListsListSerializer, TasksListSerializer, \
+    BoardsPostListSerializer
 
 
 class BoardsListCreateView(ListCreateAPIView):
-    serializer_class = BoardsListSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return BoardsGetListSerializer
+        elif self.request.method == 'POST':
+            return BoardsPostListSerializer
 
     def get_queryset(self):
-        return Board.objects.filter(owner_id=self.request.user.id)
+        user = get_object_or_404(UserProjectOwners, id=self.request.user.id)
+        return Board.objects.filter(owner_id=user)
 
     def perform_create(self, serializer):
         new_owner = UserProjectOwners.objects.get_or_create(user=self.request.user)[0]

@@ -12,4 +12,8 @@ class UserProjectOwners(models.Model):
 
 
 class UserProjectTeam(models.Model):
+    name = models.CharField(max_length=32, null=True)
     user = models.ManyToManyField(User)
+
+    def __str__(self):
+        return self.name

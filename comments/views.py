@@ -16,4 +16,4 @@ class CommentDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
 
     def get_object(self):
-        return get_object_or_404(self.queryset, task_id=self.kwargs['task_id'])
+        return get_object_or_404(self.queryset, id=self.kwargs['comment_id'])

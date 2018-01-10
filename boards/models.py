@@ -30,7 +30,7 @@ class Task(models.Model):
     priority = models.PositiveSmallIntegerField()
     deadline = models.DateTimeField()
     finished = models.BooleanField(default=False)
-    performer_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Task')
+    performer_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Task', null=True, blank=True)
     list_id = models.ForeignKey(List, on_delete=models.CASCADE, related_name='List')
 
     def __str__(self):
