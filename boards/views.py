@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from boards.models import Board, List, Task
 from users.models import UserProjectOwners
 from boards.serializers import BoardsGetListSerializer, ListsListSerializer, TasksListSerializer, \
-    BoardsPostListSerializer
+    BoardsPostListSerializer, TasksPostListSerializer
 
 
 class BoardsListCreateView(ListCreateAPIView):
@@ -34,11 +34,13 @@ class ListsListCreateView(ListCreateAPIView):
     serializer_class = ListsListSerializer
 
     def get_queryset(self):
-        return List.objects.filter(board_id=self.kwargs['board_id'])
+        board = get_object_or_404(Board, id=self.kwargs['board_id'])
+        return List.objects.filter(board_id=board)
 
     def perform_create(self, serializer):
+        board = get_object_or_404(Board, id=self.kwargs['board_id'])
         serializer.save(
-            board_id_id=self.kwargs['board_id']
+            board_id=board
         )
 
 
@@ -47,19 +49,26 @@ class ListDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = List.objects.all()
 
     def get_object(self):
-        return self.queryset.get(board_id=self.kwargs['board_id'], id=self.kwargs['list_id'])
+        return get_object_or_404(List, board_id=self.kwargs['board_id'], id=self.kwargs['list_id'])
+        #return self.queryset.get(board_id=self.kwargs['board_id'], id=self.kwargs['list_id'])
 
 
 class TasksListCreateView(ListCreateAPIView):
-    serializer_class = TasksListSerializer
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return TasksListSerializer
+        elif self.request.method == 'POST':
+            return TasksPostListSerializer
 
     def perform_create(self, serializer):
+        list_obj = get_object_or_404(List, id=self.kwargs['list_id'])
         serializer.save(
-            list_id_id=self.kwargs['list_id']
+            list_id=list_obj
         )
 
     def get_queryset(self):
-        return Task.objects.filter(list_id=self.kwargs['list_id'])
+        list_obj = get_object_or_404(List, id=self.kwargs['list_id'])
+        return Task.objects.filter(list_id=list_obj)
 
 
 class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -67,7 +76,7 @@ class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
 
     def get_object(self):
-        return get_object_or_404(Task, id=self.kwargs['task_id'], list_id=self.kwargs['task_id'])
+        return get_object_or_404(Task, id=self.kwargs['task_id'], list_id=self.kwargs['list_id'])
 
 
 class TaskCompletionView(APIView):

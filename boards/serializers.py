@@ -25,3 +25,9 @@ class TasksListSerializer(ModelSerializer):
     class Meta:
         model = Task
         fields = '__all__'
+
+
+class TasksPostListSerializer(ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ['name', 'description', 'priority', 'deadline']

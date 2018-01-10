@@ -1,4 +1,4 @@
-from django.core.urlresolvers import reverse
+from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 from django.contrib.auth.models import User
 from rest_framework import status
@@ -8,7 +8,7 @@ class UserTest(APITestCase):
     def setUp(self):
         self.test_user = User.objects.create_user('testuser', 'test@example.com', 'testpassword')
 
-        self.create_url = reverse('user-register')
+        self.create_url = reverse('users:user-register')
 
     def test_create_user(self):
         data = {
