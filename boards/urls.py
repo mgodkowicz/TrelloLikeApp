@@ -36,11 +36,11 @@ urlpatterns = [
         AddUserToTask.as_view(), name='task-add-user'),
     path(
         '<int:board_id>/lists/<int:list_id>/tasks/<int:task_id>/comments',
-        CommentListCreateView.as_view(), name='comments-list' # TODO tests
+        CommentListCreateView.as_view(), name='comments-list'
     ),
     path(
         '<int:board_id>/lists/<int:list_id>/tasks/<int:task_id>/comments/<int:comment_id>/edit',
-        CommentDetailView.as_view() # TODO tests
+        CommentDetailView.as_view(), name='comment-details'
     ),
     path(
         '<int:board_id>/lists/<int:list_id>/tasks/<int:task_id>/completed',

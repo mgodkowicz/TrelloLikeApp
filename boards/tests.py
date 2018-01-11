@@ -322,7 +322,7 @@ class TaskCreateTest(SetUp):
                     ),
             data=self.valid_payload
         )
-        task_obj = Task.objects.all().first()
+        task_obj = Task.objects.first()
         self.assertEqual(task_obj.list_id.id, self.board.id)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 

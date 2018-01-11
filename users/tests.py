@@ -32,7 +32,6 @@ class UserTest(APITestCase):
             'email': 'foobar@example.com',
             'password': 'somepassword'
         }
-
         response = self.client.post(self.create_url, data, format='json')
 
         self.assertEqual(User.objects.count(), 2)
