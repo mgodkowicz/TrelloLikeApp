@@ -50,7 +50,6 @@ class ListDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         return get_object_or_404(List, board_id=self.kwargs['board_id'], id=self.kwargs['list_id'])
-        #return self.queryset.get(board_id=self.kwargs['board_id'], id=self.kwargs['list_id'])
 
 
 class TasksListCreateView(ListCreateAPIView):

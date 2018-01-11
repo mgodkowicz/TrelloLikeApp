@@ -64,7 +64,7 @@ class GetAllUserBoardsTest(SetUp):
         self.client.logout()
         response = self.client.get(reverse('boards:list-create'))
         expected = {'detail': 'Authentication credentials were not provided.'}
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(response.data, expected)
 
 
@@ -99,7 +99,7 @@ class BoardCreateTest(APITestCase):
             reverse('boards:list-create'),
             data=self.valid_payload
         )
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class GetAllBoardListsTest(SetUp):
@@ -119,7 +119,7 @@ class GetAllBoardListsTest(SetUp):
             reverse('boards:lists-list-create', kwargs={'board_id': 1})
         )
         expected = {'detail': 'Authentication credentials were not provided.'}
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(response.data, expected)
 
     def test_get_list_for_invalid_board(self):
@@ -167,7 +167,7 @@ class ListsCreateTest(SetUp):
             reverse('boards:lists-list-create', kwargs={'board_id': 1}),
             data=self.valid_payload
         )
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class GetSingleListTest(SetUp):
@@ -284,7 +284,7 @@ class GetListTasksTest(SetUp):
                     )
         )
         expected = {'detail': 'Authentication credentials were not provided.'}
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(response.data, expected)
 
     def test_get_tasks_for_invalid_list(self):
@@ -360,7 +360,7 @@ class TaskCreateTest(SetUp):
             data=self.valid_payload
 
         )
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
 class GetSingleTaskTest(SetUp):
