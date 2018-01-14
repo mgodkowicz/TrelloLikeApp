@@ -1,7 +1,7 @@
 from django.urls import path
 
 from boards.views import BoardsListCreateView, ListsListCreateView, ListDetailView, TasksListCreateView, \
-    TaskDetailView, TaskCompletionView, TaskMoveView
+    TaskDetailView, TaskCompletionView, TaskMoveView, ListTeamForTaskView
 from comments.views import CommentListCreateView, CommentDetailView
 from users.views import BoardAddUserView, AddUserToTask
 
@@ -12,7 +12,7 @@ urlpatterns = [
         '', BoardsListCreateView.as_view(), name='list-create'
     ),
     path(
-        '<int:board_id>/add_user/<int:user_id>',
+        '<int:board_id>/add_user/<str:username>',
         BoardAddUserView.as_view(), name='add-user'
     ),
     path(
@@ -32,7 +32,10 @@ urlpatterns = [
         TaskDetailView.as_view(), name="task-details"
     ),
     path(
-        '<int:board_id>/lists/<int:list_id>/tasks/<int:task_id>/add_user/<int:user_id>',
+        '<int:board_id>/team',
+        ListTeamForTaskView.as_view(), name='list-team'),
+    path(
+        '<int:board_id>/lists/<int:list_id>/tasks/<int:task_id>/add_user/<str:username>',
         AddUserToTask.as_view(), name='task-add-user'),
     path(
         '<int:board_id>/lists/<int:list_id>/tasks/<int:task_id>/comments',

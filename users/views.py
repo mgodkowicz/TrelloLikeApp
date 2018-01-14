@@ -31,7 +31,7 @@ class BoardAddUserView(APIView):
             id=board.contributors
         )[0]
 
-        user_obj = User.objects.get(id=self.kwargs['user_id'])
+        user_obj = User.objects.get(username=self.kwargs['username'])
 
         team.user.add(user_obj)
         board.contributors = team
@@ -48,11 +48,11 @@ class AddUserToTask(APIView):
 
     def get(self, request, **kwargs):
         task = get_object_or_404(Task, id=self.kwargs['task_id'])
-        user = get_object_or_404(User, id=self.kwargs['user_id'])
+        user = get_object_or_404(User, username=self.kwargs['username'])
         task.performer_id = user
         task.save()
 
         return Response({
             'task_id': task.id,
-            'user': user.id
+            'user': user.username
         })

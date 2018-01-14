@@ -16,4 +16,4 @@ class UserProjectTeam(models.Model):
     user = models.ManyToManyField(User)
 
     def __str__(self):
-        return "{} team".format(self.board.name)
+        return "{} team".format(self.name)

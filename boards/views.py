@@ -1,14 +1,15 @@
 from rest_framework import generics
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 
 from boards.models import Board, List, Task
-from users.models import UserProjectOwners
+from users.models import UserProjectOwners, UserProjectTeam
 from boards.serializers import BoardsGetListSerializer, ListsListSerializer, TasksListSerializer, \
-    BoardsPostListSerializer, TasksPostListSerializer
+    BoardsPostListSerializer, TasksPostListSerializer, TaskDetailsSerializer, ListTeamSerializer
 
 
 class BoardsListCreateView(ListCreateAPIView):
@@ -20,8 +21,10 @@ class BoardsListCreateView(ListCreateAPIView):
             return BoardsPostListSerializer
 
     def get_queryset(self):
-        user = get_object_or_404(UserProjectOwners, id=self.request.user.id)
-        return Board.objects.filter(owner_id=user)
+        owner = UserProjectOwners.objects.filter(id=self.request.user.id)
+        team = UserProjectTeam.objects.filter(user=self.request.user)
+
+        return Board.objects.filter(Q(contributors__in=team) | Q(owner_id__in=owner))
 
     def perform_create(self, serializer):
         new_owner = UserProjectOwners.objects.get_or_create(user=self.request.user)[0]
@@ -71,7 +74,7 @@ class TasksListCreateView(ListCreateAPIView):
 
 
 class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = TasksListSerializer
+    serializer_class = TaskDetailsSerializer
     queryset = Task.objects.all()
 
     def get_object(self):
@@ -101,3 +104,11 @@ class TaskMoveView(APIView):
                 'task_id': task.id,
                 'new_list_id': task.list_id.id
             })
+
+
+class ListTeamForTaskView(ListAPIView):
+    serializer_class = ListTeamSerializer
+
+    def get_queryset(self):
+
+        return UserProjectTeam.objects.filter(board=self.kwargs['board_id'])

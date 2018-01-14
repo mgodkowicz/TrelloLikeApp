@@ -20,7 +20,7 @@ class Board(models.Model):
 
 class List(models.Model):
     name = models.TextField()
-    board_id = models.ForeignKey(Board, on_delete=models.CASCADE, related_name='Project')
+    board_id = models.ForeignKey(Board, on_delete=models.CASCADE, related_name='lists')
 
     def __str__(self):
         return self.name
@@ -33,7 +33,7 @@ class Task(models.Model):
     deadline = models.DateTimeField()
     finished = models.BooleanField(default=False)
     performer_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Task', null=True, blank=True)
-    list_id = models.ForeignKey(List, on_delete=models.CASCADE, related_name='List')
+    list_id = models.ForeignKey(List, on_delete=models.CASCADE, related_name='tasks')
 
     def __str__(self):
         return self.name

@@ -1,4 +1,4 @@
-from rest_framework import status
+from rest_framework import status_class
 
 from boards.models import Task
 from boards.tests import SetUp

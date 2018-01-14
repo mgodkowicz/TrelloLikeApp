@@ -25,7 +25,7 @@ SECRET_KEY = 'h06kps3%y_$o-wdhlo^$tecgky2o4f)h^^*kw8nsr29tvnuc&c'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.8.102']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'boards',
     'comments',
     'users',
@@ -60,6 +61,7 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -68,6 +70,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'TrelloLikeAPP.urls'
+
+CORS_ORIGIN_ALLOW_ALL = True
+
 
 TEMPLATES = [
     {
@@ -137,3 +142,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+INTERNAL_IPS = ('127.0.0.1', 'localhost', '192.168.8.102')
