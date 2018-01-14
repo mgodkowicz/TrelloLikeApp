@@ -28,13 +28,17 @@ class BoardAddUserView(APIView):
     def get(self, request, **kwargs):
         board = get_object_or_404(Board, id=self.kwargs['board_id'])
         team = UserProjectTeam.objects.get_or_create(
-            id=board.contributors
+            id=board.contributors.id
         )[0]
 
         user_obj = User.objects.get(username=self.kwargs['username'])
 
-        team.user.add(user_obj)
-        board.contributors = team
+        if team.user.filter(username=user_obj.username).exists():
+            team.user.remove(user_obj)
+            team.save()
+        else:
+            team.user.add(user_obj)
+            board.contributors = team
         team.save()
         board.save()
 
