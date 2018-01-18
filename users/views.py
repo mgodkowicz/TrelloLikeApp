@@ -28,7 +28,7 @@ class BoardAddUserView(APIView):
     def get(self, request, **kwargs):
         board = get_object_or_404(Board, id=self.kwargs['board_id'])
         team = UserProjectTeam.objects.get_or_create(
-            id=board.contributors.id
+            id=board.contributors
         )[0]
 
         user_obj = User.objects.get(username=self.kwargs['username'])

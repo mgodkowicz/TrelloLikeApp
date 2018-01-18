@@ -6,7 +6,7 @@ from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase, APIClient
 
 from boards.models import Board, List, Task
-from boards.serializers import BoardsGetListSerializer, ListsListSerializer, TasksListSerializer
+from boards.serializers import BoardsGetListSerializer, ListsListSerializer, TasksListSerializer, TaskDetailsSerializer
 from users.models import UserProjectOwners, UserProjectTeam
 
 
@@ -375,7 +375,7 @@ class GetSingleTaskTest(SetUp):
                     )
         )
         task_obj = Task.objects.first()
-        serializer = TasksListSerializer(task_obj)
+        serializer = TaskDetailsSerializer(task_obj)
         self.assertEqual(task_obj.id, self.task_obj.id)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -487,7 +487,7 @@ class TaskManagementTest(SetUp):
                         'board_id': self.board.id,
                         'list_id': self.list_obj.id,
                         'task_id': self.task_obj.id,
-                        'user_id': self.user2.id
+                        'username': self.user2.username
                         }
                     )
         )
@@ -506,7 +506,7 @@ class BoardAddUserTest(SetUp):
             reverse('boards:add-user',
                     kwargs={
                         'board_id': self.board.id,
-                        'user_id': self.user2.id
+                        'username': self.user2.username
                     })
         )
         board = Board.objects.get(id=self.board.id)

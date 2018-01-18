@@ -1,11 +1,9 @@
-from rest_framework import status_class
-
-from boards.models import Task
+from rest_framework import status
 from boards.tests import SetUp
 from django.urls import reverse
 
 from comments.models import Comment
-from comments.serializers import CommentSerializer
+from comments.serializers import CommentSerializer, CommentDetailsSerializer
 
 
 class GetCommentsListTests(SetUp):
@@ -27,13 +25,13 @@ class GetCommentsListTests(SetUp):
         response = self.client.get(
             reverse('boards:comments-list',
                     kwargs={'board_id': self.board.id,
-                            'list_id': self.list_obj.id,
+                             'list_id': self.list_obj.id,
                             'task_id': self.task_obj.id
                             }
                     )
         )
         comments = Comment.objects.filter(task_id=self.task_obj.id)
-        serializer = CommentSerializer(comments, many=True)
+        serializer = CommentDetailsSerializer(comments, many=True)
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
