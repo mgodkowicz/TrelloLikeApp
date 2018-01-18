@@ -4,7 +4,7 @@ import dj_database_url
 
 ENVIRONMENT = 'production'
 
-DEBUG = False
+DEBUG = True
 
 INSTALLED_APPS += []
 
