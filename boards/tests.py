@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.contrib.auth.models import User
+from django.db.models import Q
 from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase, APIClient
@@ -54,10 +55,15 @@ class GetAllUserBoardsTest(SetUp):
         response = self.client.get(reverse(
             'boards:list-create'
         ))
-        boards = Board.objects.filter(owner_id=self.owner)
+        owner = UserProjectOwners.objects.filter(user=self.user)
+        team = UserProjectTeam.objects.filter(user=self.user)
+        boards = Board.objects.filter(
+            Q(contributors__in=team) | Q(owner_id__in=owner)
+        )
         serializer = BoardsGetListSerializer(boards, many=True)
-        self.assertEqual(len(boards), 1)
+        self.assertEqual(len(boards), 2)
         self.assertEqual(response.data, serializer.data)
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_not_logged_user_get_all_boards(self):

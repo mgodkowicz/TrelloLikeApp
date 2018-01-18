@@ -21,7 +21,7 @@ class BoardsListCreateView(ListCreateAPIView):
             return BoardsPostListSerializer
 
     def get_queryset(self):
-        owner = UserProjectOwners.objects.filter(id=self.request.user.id)
+        owner = UserProjectOwners.objects.filter(user=self.request.user)
         team = UserProjectTeam.objects.filter(user=self.request.user)
 
         return Board.objects.filter(Q(contributors__in=team) | Q(owner_id__in=owner))
