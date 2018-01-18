@@ -1,1 +1,1 @@
-web: gunicorn TrelloLikeApp.wsgi --log-file -
+web: gunicorn TrelloLikeAPP.wsgi --log-file -
