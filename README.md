@@ -30,7 +30,7 @@ whitenoise==3.3.1
 After installing Python and pip just call:
 
 ```
-pip install -r requirements
+pip install -r requirements.txt
 ```
 
 to start dev server simply:
