@@ -22,11 +22,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'h06kps3%y_$o-wdhlo^$tecgky2o4f)h^^*kw8nsr29tvnuc&c'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = ['192.168.8.102']
-
 
 # Application definition
 
@@ -38,6 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'dj_database_url',
     'boards',
     'comments',
     'users',
@@ -141,6 +137,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
-STATIC_URL = '/static/'
 
 INTERNAL_IPS = ('127.0.0.1', 'localhost', '192.168.8.102')
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
+STATIC_URL = '/static/'
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
